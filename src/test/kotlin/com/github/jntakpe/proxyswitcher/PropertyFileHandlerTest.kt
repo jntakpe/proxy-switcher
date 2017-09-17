@@ -7,39 +7,37 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import java.io.FileNotFoundException
 import java.nio.file.Files
-import java.nio.file.Path
-import java.nio.file.Paths
 
 class PropertyFileHandlerTest {
 
     @BeforeEach
     fun beforeEach() {
-        cleanUpDirectory(propertyDir())
-        createEmptyPropertyFile(propertyDir())
-        createNotEmptyPropertyFile(propertyDir())
+        cleanUpTmpDir()
+        createEmptyPropertyFile()
+        createNotEmptyPropertyFile()
     }
 
     @AfterEach
     fun afterEach() {
-        cleanUpDirectory(propertyDir())
+        cleanUpTmpDir()
     }
 
     @Test
     fun `init should create new file`() {
-        val path = propertyDir().resolve("new_file.properties")
+        val path = tmpDirPath().resolve("new_file.properties")
         PropertyFileHandler(path)
         assertThat(path).exists()
     }
 
     @Test
     fun `init should fail if file does not exist`() {
-        val path = propertyDir().resolve("unknown_file.properties")
+        val path = tmpDirPath().resolve("unknown_file.properties")
         assertThat(catchThrowable { PropertyFileHandler(path, false) }).isInstanceOf(FileNotFoundException::class.java)
     }
 
     @Test
     fun `put should add property to empty file`() {
-        val path = propertyDir().resolve("empty.properties")
+        val path = tmpDirPath().resolve("empty.properties")
         val key = "newline"
         val value = "some value"
         PropertyFileHandler(path).put(key, value)
@@ -49,7 +47,7 @@ class PropertyFileHandlerTest {
 
     @Test
     fun `put should add property to existing file`() {
-        val path = propertyDir().resolve("not_empty.properties")
+        val path = tmpDirPath().resolve("not_empty.properties")
         val key = "newline"
         val value = "some value"
         PropertyFileHandler(path).put(key, value)
@@ -62,7 +60,7 @@ class PropertyFileHandlerTest {
 
     @Test
     fun `put should not add property if key already exists`() {
-        val path = propertyDir().resolve("not_empty.properties")
+        val path = tmpDirPath().resolve("not_empty.properties")
         val initSize = Files.readAllLines(path).size
         val key = "firstKey"
         PropertyFileHandler(path).put(key, "someVal")
@@ -73,7 +71,7 @@ class PropertyFileHandlerTest {
 
     @Test
     fun `put should edit value if key exists`() {
-        val path = propertyDir().resolve("not_empty.properties")
+        val path = tmpDirPath().resolve("not_empty.properties")
         val key = "firstKey"
         val updatedValue = "updatedValue"
         PropertyFileHandler(path).put(key, updatedValue)
@@ -83,7 +81,7 @@ class PropertyFileHandlerTest {
 
     @Test
     fun `remove should remove property from an existing file`() {
-        val path = propertyDir().resolve("not_empty.properties")
+        val path = tmpDirPath().resolve("not_empty.properties")
         val lines = Files.readAllLines(path)
         val key = "secondKey"
         assertThat(lines.filter { it.startsWith(key) }).isNotEmpty
@@ -93,19 +91,11 @@ class PropertyFileHandlerTest {
         assertThat(updatedLines.filter { it.startsWith(key) }).isEmpty()
     }
 
-    private fun propertyDir() = Paths.get("src", "test", "resources", "properties")
+    private fun createEmptyPropertyFile() = Files.createFile(tmpDirPath().resolve("empty.properties"))
 
-    private fun createEmptyPropertyFile(propertyDir: Path) {
-        Files.createFile(propertyDir.resolve("empty.properties"))
-    }
-
-    private fun createNotEmptyPropertyFile(propertyDir: Path) {
-        val path = Files.createFile(propertyDir.resolve("not_empty.properties"))
+    private fun createNotEmptyPropertyFile() {
+        val path = Files.createFile(tmpDirPath().resolve("not_empty.properties"))
         Files.write(path, listOf("firstKey=firstVal", "secondKey=secondVal"))
-    }
-
-    private fun cleanUpDirectory(propertyDir: Path) {
-        Files.list(propertyDir).forEach { Files.delete(it) }
     }
 
 }

@@ -5,7 +5,7 @@ import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.StandardOpenOption.APPEND
 
-class PropertyFileHandler(private val path: Path, val create: Boolean = true) {
+class PropertyFileHandler(private val path: Path, private val create: Boolean = true) {
 
     init {
         createIfMissing()
@@ -28,7 +28,7 @@ class PropertyFileHandler(private val path: Path, val create: Boolean = true) {
         if (create && !exists) {
             Files.createFile(path)
         } else if (!exists) {
-            throw FileNotFoundException("File $path doesn't exist")
+            throw FileNotFoundException("File ${path.toAbsolutePath()} doesn't exist")
         }
     }
 

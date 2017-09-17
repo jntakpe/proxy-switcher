@@ -20,9 +20,10 @@ repositories {
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
+    testCompile "commons-io:commons-io:$commons_io_version"
+    testCompile "org.assertj:assertj-core:$assertj_version"
     testCompile "org.junit.jupiter:junit-jupiter-api:$junit_version"
     testRuntime "org.junit.jupiter:junit-jupiter-engine:$junit_version"
-    testCompile "org.assertj:assertj-core:$assertj_version"
 }
 
 compileKotlin {
