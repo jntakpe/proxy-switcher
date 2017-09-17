@@ -2,6 +2,7 @@ package com.github.jntakpe.proxyswitcher
 
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.catchThrowable
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import java.io.FileNotFoundException
@@ -9,14 +10,18 @@ import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
 
-internal class PropertyFileHandlerTest {
+class PropertyFileHandlerTest {
 
     @BeforeEach
     fun beforeEach() {
-        val propertiesDir = propertyDir()
-        cleanUpDirectory(propertiesDir)
-        createEmptyPropertyFile(propertiesDir)
-        createNotEmptyPropertyFile(propertiesDir)
+        cleanUpDirectory(propertyDir())
+        createEmptyPropertyFile(propertyDir())
+        createNotEmptyPropertyFile(propertyDir())
+    }
+
+    @AfterEach
+    fun afterEach() {
+        cleanUpDirectory(propertyDir())
     }
 
     @Test
@@ -53,6 +58,39 @@ internal class PropertyFileHandlerTest {
         assertThat(lines).contains(line)
         assertThat(lines.size).isGreaterThan(1)
         assertThat(lines.last()).isEqualTo(line)
+    }
+
+    @Test
+    fun `put should not add property if key already exists`() {
+        val path = propertyDir().resolve("not_empty.properties")
+        val initSize = Files.readAllLines(path).size
+        val key = "firstKey"
+        PropertyFileHandler(path).put(key, "someVal")
+        val updatedLines = Files.readAllLines(path)
+        assertThat(updatedLines).hasSize(initSize)
+        assertThat(updatedLines.filter { it.startsWith(key) }).hasSize(1)
+    }
+
+    @Test
+    fun `put should edit value if key exists`() {
+        val path = propertyDir().resolve("not_empty.properties")
+        val key = "firstKey"
+        val updatedValue = "updatedValue"
+        PropertyFileHandler(path).put(key, updatedValue)
+        val updatedLines = Files.readAllLines(path)
+        assertThat(updatedLines.first { it.startsWith(key) }).isEqualTo("$key=$updatedValue")
+    }
+
+    @Test
+    fun `remove should remove property from an existing file`() {
+        val path = propertyDir().resolve("not_empty.properties")
+        val lines = Files.readAllLines(path)
+        val key = "secondKey"
+        assertThat(lines.filter { it.startsWith(key) }).isNotEmpty
+        PropertyFileHandler(path).remove(key)
+        val updatedLines = Files.readAllLines(path)
+        assertThat(updatedLines).hasSize(lines.size - 1)
+        assertThat(updatedLines.filter { it.startsWith(key) }).isEmpty()
     }
 
     private fun propertyDir() = Paths.get("src", "test", "resources", "properties")
