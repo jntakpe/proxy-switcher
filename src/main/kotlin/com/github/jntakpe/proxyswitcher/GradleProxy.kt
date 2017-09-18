@@ -8,7 +8,7 @@ import java.nio.file.Files
 
 class GradleProxy(platform: Platform, private val address: ProxyAddress) : Proxy {
 
-    private val fileHandler: PropertyFileHandler
+    private val fileHandler: FileHandler
 
     init {
         val gradleDir = platform.userHome().resolve(".gradle")

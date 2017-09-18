@@ -1,35 +1,25 @@
 package com.github.jntakpe.proxyswitcher
 
-import java.io.FileNotFoundException
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.StandardOpenOption.APPEND
 
-class PropertyFileHandler(private val path: Path, private val create: Boolean = true) {
+class PropertyFileHandler(private val path: Path, private val create: Boolean = true) : FileHandler {
 
     init {
-        createIfMissing()
+        createIfMissing(path, create)
     }
 
-    fun put(key: String, value: String) {
+    override fun put(key: String, value: String) {
         if (keyExists(key)) {
             remove(key)
         }
         Files.write(path, listOf("$key=$value"), APPEND)
     }
 
-    fun remove(key: String) {
+    override fun remove(key: String) {
         val updatedLines = Files.readAllLines(path).filter { !it.startsWith(key) }
         Files.write(path, updatedLines)
-    }
-
-    private fun createIfMissing() {
-        val exists = Files.exists(path)
-        if (create && !exists) {
-            Files.createFile(path)
-        } else if (!exists) {
-            throw FileNotFoundException("File ${path.toAbsolutePath()} doesn't exist")
-        }
     }
 
     private fun keyExists(key: String) = Files.readAllLines(path)
