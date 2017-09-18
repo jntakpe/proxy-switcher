@@ -84,8 +84,17 @@ internal class GradleProxyTest {
     fun `enable should create complete gradle properties file equals to sample file`() {
         val nonProxyValue = listOf("localhost", "127.0.0.1", "10.10.1.*")
         GradleProxy(TestPlatform(), ProxyAddress("some.proxy.host.value", "8080", nonProxyValue)).enable()
-        val samplePath = Paths.get("src", "test", "resources", "sample", "gradle.properties")
-        assertThat(configLines()).isEqualTo(Files.readAllLines(samplePath))
+        assertThat(configLines()).isEqualTo(Files.readAllLines(samplePath()))
+    }
+
+    private fun samplePath() = Paths.get("src", "test", "resources", "sample", "gradle.properties")
+
+    @Test
+    fun `disable should remove all properties related to proxy configuration`() {
+        Files.copy(samplePath(), configFile())
+        assertThat(configLines()).isNotEmpty
+        GradleProxy(TestPlatform(), ProxyAddress("", "")).disable()
+        assertThat(configLines()).isEmpty()
     }
 
     private fun createGradleConfigurationDirectory() = Files.createDirectory(TestPlatform().userHome().resolve(".gradle"))

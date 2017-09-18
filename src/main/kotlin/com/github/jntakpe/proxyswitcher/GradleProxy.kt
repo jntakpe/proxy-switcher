@@ -1,11 +1,12 @@
 package com.github.jntakpe.proxyswitcher
 
+import com.github.jntakpe.proxyswitcher.GradleProperties.*
 import com.github.jntakpe.proxyswitcher.Protocol.HTTP
 import com.github.jntakpe.proxyswitcher.Protocol.HTTPS
 import java.io.FileNotFoundException
 import java.nio.file.Files
 
-class GradleProxy(private val platform: Platform, private val address: ProxyAddress) : Proxy {
+class GradleProxy(platform: Platform, private val address: ProxyAddress) : Proxy {
 
     private val fileHandler: PropertyFileHandler
 
@@ -23,16 +24,19 @@ class GradleProxy(private val platform: Platform, private val address: ProxyAddr
         applyProxyProperties(HTTPS)
     }
 
-    private fun applyProxyProperties(protocol: Protocol) {
-        fileHandler.put(prefixKey("proxyHost", protocol), address.host)
-        fileHandler.put(prefixKey("proxyPort", protocol), address.port)
-        if (address.nonProxies.isNotEmpty()) {
-            fileHandler.put(prefixKey("nonProxyHosts", protocol), address.nonProxies.joinToString("|"))
-        }
+    override fun disable() {
+        GradleProperties.values()
+                .flatMap { t -> listOf(HTTP, HTTPS).map { Pair(t.key, it) } }
+                .map { prefixKey(it.first, it.second) }
+                .forEach { fileHandler.remove(it) }
     }
 
-    override fun disable() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    private fun applyProxyProperties(protocol: Protocol) {
+        fileHandler.put(prefixKey(HOST.key, protocol), address.host)
+        fileHandler.put(prefixKey(PORT.key, protocol), address.port)
+        if (address.nonProxies.isNotEmpty()) {
+            fileHandler.put(prefixKey(NON_PROXY.key, protocol), address.nonProxies.joinToString("|"))
+        }
     }
 
     private fun prefixKey(key: String, protocol: Protocol) = "systemProp.${protocol.value}.$key"
