@@ -15,8 +15,7 @@ class GradleProxy(platform: Platform, private val address: ProxyAddress) : Proxy
         if (!Files.exists(gradleDir)) {
             throw FileNotFoundException("Unable to find gradle configuration directory : ${gradleDir.toAbsolutePath()}")
         }
-        val filePath = gradleDir.resolve("gradle.properties")
-        fileHandler = PropertyFileHandler(filePath)
+        fileHandler = PropertyFileHandler(gradleDir.resolve("gradle.properties"))
     }
 
     override fun enable() {

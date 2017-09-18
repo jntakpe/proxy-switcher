@@ -70,9 +70,30 @@ class PropertyFileHandlerTest {
     }
 
     @Test
+    fun `put should not add property if key already exists ignoring case`() {
+        val path = tmpDirPath().resolve("not_empty.properties")
+        val initSize = Files.readAllLines(path).size
+        val key = "FIRSTKEY"
+        PropertyFileHandler(path).put(key, "someVal")
+        val updatedLines = Files.readAllLines(path)
+        assertThat(updatedLines).hasSize(initSize)
+        assertThat(updatedLines.filter { it.startsWith(key, true) }).hasSize(1)
+    }
+
+    @Test
     fun `put should edit value if key exists`() {
         val path = tmpDirPath().resolve("not_empty.properties")
         val key = "firstKey"
+        val updatedValue = "updatedValue"
+        PropertyFileHandler(path).put(key, updatedValue)
+        val updatedLines = Files.readAllLines(path)
+        assertThat(updatedLines.first { it.startsWith(key) }).isEqualTo("$key=$updatedValue")
+    }
+
+    @Test
+    fun `put should edit value if key exists ignoring case`() {
+        val path = tmpDirPath().resolve("not_empty.properties")
+        val key = "FIRSTKEY"
         val updatedValue = "updatedValue"
         PropertyFileHandler(path).put(key, updatedValue)
         val updatedLines = Files.readAllLines(path)
@@ -89,6 +110,18 @@ class PropertyFileHandlerTest {
         val updatedLines = Files.readAllLines(path)
         assertThat(updatedLines).hasSize(lines.size - 1)
         assertThat(updatedLines.filter { it.startsWith(key) }).isEmpty()
+    }
+
+    @Test
+    fun `remove should remove property ignoring case`() {
+        val path = tmpDirPath().resolve("not_empty.properties")
+        val lines = Files.readAllLines(path)
+        val key = "SECONDKEY"
+        assertThat(lines.filter { it.startsWith("secondKey") }).isNotEmpty
+        PropertyFileHandler(path).remove(key)
+        val updatedLines = Files.readAllLines(path)
+        assertThat(updatedLines).hasSize(lines.size - 1)
+        assertThat(updatedLines.filter { it.startsWith(key, true) }).isEmpty()
     }
 
     private fun createEmptyPropertyFile() = Files.createFile(tmpDirPath().resolve("empty.properties"))

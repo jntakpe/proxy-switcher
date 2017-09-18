@@ -13,3 +13,10 @@ internal fun createIfMissing(path: Path, create: Boolean) {
         throw FileNotFoundException("File ${path.toAbsolutePath()} doesn't exist")
     }
 }
+
+internal fun keyExists(path: Path, key: String, delimiter: String): Boolean {
+    return Files.readAllLines(path)
+            .map { it.substringBefore(delimiter) }
+            .map { it.trim() }
+            .any { it.equals(key, true) }
+}

@@ -9,4 +9,6 @@ internal fun cleanUpTmpDir() {
     Files.createDirectory(tmpDirPath())
 }
 
-internal fun tmpDirPath() = Paths.get("src", "test", "resources", "tmp")
+internal fun resourcesDirPath() = Paths.get("src", "test", "resources")
+
+internal fun tmpDirPath() = resourcesDirPath().resolve("tmp")
