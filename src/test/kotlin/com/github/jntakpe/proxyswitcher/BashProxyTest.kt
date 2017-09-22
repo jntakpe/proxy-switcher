@@ -5,6 +5,7 @@ import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import java.nio.file.Files
+import java.nio.file.Paths
 
 internal class BashProxyTest {
 
@@ -59,9 +60,21 @@ internal class BashProxyTest {
         assertThat(configLines()).contains("$nonProxyKey=localhost,127.0.0.1,10.10.1.*")
     }
 
+    @Test
+    fun `disable should remove all properties related to proxy configuration`() {
+        Files.copy(samplePath(), configFile())
+        assertThat(configLines()).isNotEmpty
+        BashProxy(TestPlatform(), ProxyAddress("", "")).disable()
+        val proxyLines = configLines()
+                .filter { it.startsWith("export HTTP_PROXY") || it.startsWith("export HTTPS_PROXY") || it.startsWith("export NO_PROXY") }
+        assertThat(proxyLines).isEmpty()
+    }
+
     private fun configFile() = TestPlatform().userHome().resolve(".bash_profile")
 
     private fun configLines() = Files.readAllLines(configFile())
+
+    private fun samplePath() = Paths.get("src", "test", "resources", "sample", ".bash_profile")
 
 }
 

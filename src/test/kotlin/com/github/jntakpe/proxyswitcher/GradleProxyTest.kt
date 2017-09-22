@@ -87,8 +87,6 @@ internal class GradleProxyTest {
         assertThat(configLines()).isEqualTo(Files.readAllLines(samplePath()))
     }
 
-    private fun samplePath() = Paths.get("src", "test", "resources", "sample", "gradle.properties")
-
     @Test
     fun `disable should remove all properties related to proxy configuration`() {
         Files.copy(samplePath(), configFile())
@@ -96,6 +94,8 @@ internal class GradleProxyTest {
         GradleProxy(TestPlatform(), ProxyAddress("", "")).disable()
         assertThat(configLines()).isEmpty()
     }
+
+    private fun samplePath() = Paths.get("src", "test", "resources", "sample", "gradle.properties")
 
     private fun createGradleConfigurationDirectory() = Files.createDirectory(TestPlatform().userHome().resolve(".gradle"))
 
