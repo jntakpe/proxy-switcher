@@ -6,7 +6,7 @@ import com.github.jntakpe.proxyswitcher.Protocol.HTTPS
 import java.io.FileNotFoundException
 import java.nio.file.Files
 
-class GradleProxy(platform: Platform, private val address: ProxyAddress) : Proxy {
+class GradleProxy(platform: Platform, private val proxyAddress: ProxyAddress) : Proxy {
 
     private val fileHandler: FileHandler
 
@@ -31,10 +31,10 @@ class GradleProxy(platform: Platform, private val address: ProxyAddress) : Proxy
     }
 
     private fun applyProxyProperties(protocol: Protocol) {
-        fileHandler.put(prefixKey(HOST.key, protocol), address.host)
-        fileHandler.put(prefixKey(PORT.key, protocol), address.port)
-        if (address.nonProxies.isNotEmpty()) {
-            fileHandler.put(prefixKey(NON_PROXY.key, protocol), address.nonProxies.joinToString("|"))
+        fileHandler.put(prefixKey(HOST.key, protocol), proxyAddress.host)
+        fileHandler.put(prefixKey(PORT.key, protocol), proxyAddress.port)
+        if (proxyAddress.nonProxies.isNotEmpty()) {
+            fileHandler.put(prefixKey(NON_PROXY.key, protocol), proxyAddress.nonProxies.joinToString("|"))
         }
     }
 
