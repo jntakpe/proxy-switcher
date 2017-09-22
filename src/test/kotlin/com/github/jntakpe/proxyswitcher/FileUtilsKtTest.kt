@@ -2,11 +2,17 @@ package com.github.jntakpe.proxyswitcher
 
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.catchThrowable
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import java.io.FileNotFoundException
 import java.nio.file.Files
 
 internal class FileUtilsKtTest {
+
+    @BeforeEach
+    fun beforeEach() {
+        cleanUpTmpDir()
+    }
 
     @Test
     fun `create if missing should not create file if create flag false`() {
