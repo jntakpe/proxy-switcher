@@ -1,5 +1,6 @@
 package com.github.jntakpe.proxyswitcher
 
+import com.github.jntakpe.proxyswitcher.Protocol.HTTP
 import java.io.FileNotFoundException
 import java.nio.file.Files
 
@@ -16,7 +17,11 @@ class BashProxy(platform: Platform, private val proxyAddress: ProxyAddress) : Pr
     }
 
     override fun enable() {
-
+        fileHandler.put("HTTP_PROXY", "${HTTP.value}://${proxyAddress.host}:${proxyAddress.port}")
+        fileHandler.put("HTTPS_PROXY", "\$HTTP_PROXY")
+        if (proxyAddress.nonProxies.isNotEmpty()) {
+            fileHandler.put("NO_PROXY", proxyAddress.nonProxies.joinToString(","))
+        }
     }
 
     override fun disable() {
