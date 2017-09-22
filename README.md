@@ -26,9 +26,9 @@ To run the application you need to provide the following arguments :
 | No proxy values                          | localhost,127.0.0.1   | Comma separated             |
 
 For instance, to enable the proxies with the previous parameters : 
-``bash
+```bash
 java -jar proxy-switcher-VERSION.jar enable bash,gradle some.proxy.host.value 8080 localhost,127.0.0.1
-``
+```
 
 ## Supported proxies
 
