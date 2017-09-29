@@ -23,7 +23,7 @@ internal class BashProxyTest {
     }
 
     @Test
-    fun `enable should create bah profile file if missing`() {
+    fun `enable should create bash profile file if missing`() {
         BashProxy(TestPlatform(), ProxyAddress("", "")).enable()
         assertThat(TestPlatform().userHome().resolve(".bash_profile")).exists()
     }

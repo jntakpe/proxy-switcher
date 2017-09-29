@@ -1,6 +1,5 @@
 package com.github.jntakpe.proxyswitcher.proxy
 
-import com.github.jntakpe.proxyswitcher.constant.BashProxyKeys.*
 import com.github.jntakpe.proxyswitcher.constant.Protocol.HTTP
 import com.github.jntakpe.proxyswitcher.filehandler.BashFileHandler
 import com.github.jntakpe.proxyswitcher.filehandler.FileHandler
@@ -13,6 +12,12 @@ class BashProxy(platform: Platform, private val proxyAddress: ProxyAddress) : Pr
 
     private val fileHandler: FileHandler
 
+    companion object {
+        const val HTTP_PROXY = "HTTP_PROXY"
+        const val HTTPS_PROXY = "HTTPS_PROXY"
+        const val NO_PROXY = "NO_PROXY"
+    }
+
     init {
         val userHome = platform.userHome()
         if (!Files.exists(userHome)) {
@@ -22,17 +27,17 @@ class BashProxy(platform: Platform, private val proxyAddress: ProxyAddress) : Pr
     }
 
     override fun enable() {
-        fileHandler.put(HTTP_PROXY.name, "${HTTP.value}://${proxyAddress.host}:${proxyAddress.port}")
-        fileHandler.put(HTTPS_PROXY.name, "\$HTTP_PROXY")
+        fileHandler.put(HTTP_PROXY, "${HTTP.value}://${proxyAddress.host}:${proxyAddress.port}")
+        fileHandler.put(HTTPS_PROXY, "\$HTTP_PROXY")
         if (proxyAddress.nonProxies.isNotEmpty()) {
-            fileHandler.put(NO_PROXY.name, proxyAddress.nonProxies.joinToString(","))
+            fileHandler.put(NO_PROXY, proxyAddress.nonProxies.joinToString(","))
         }
     }
 
     override fun disable() {
-        fileHandler.remove(HTTP_PROXY.name)
-        fileHandler.remove(HTTPS_PROXY.name)
-        fileHandler.remove(NO_PROXY.name)
+        fileHandler.remove(HTTP_PROXY)
+        fileHandler.remove(HTTPS_PROXY)
+        fileHandler.remove(NO_PROXY)
     }
 
 }

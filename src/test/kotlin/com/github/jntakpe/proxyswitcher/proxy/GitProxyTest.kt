@@ -51,7 +51,8 @@ internal class GitProxyTest {
         Files.copy(samplePath(), configFile())
         assertThat(configLines()).isNotEmpty
         GitProxy(TestPlatform(), ProxyAddress("", "")).disable()
-        assertThat(configLines()).isEmpty()
+        val proxyLines = configLines().map { it.trim() }.filter { it.startsWith("[http]") || it.startsWith("[https]") || it.startsWith("proxy") }
+        assertThat(proxyLines).isEmpty()
     }
 
     private fun configFile() = TestPlatform().userHome().resolve(".gitconfig")
