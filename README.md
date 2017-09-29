@@ -27,7 +27,7 @@ To run the application you need to provide the following arguments :
 
 For instance, to enable the proxies with the previous parameters : 
 ```bash
-java -jar proxy-switcher-VERSION.jar enable bash,gradle,git some.proxy.host.value 8080 localhost,127.0.0.1
+java -jar proxy-switcher-VERSION.jar enable bash,gradle,git,npm some.proxy.host.value 8080 localhost,127.0.0.1
 ```
 
 ## Supported proxies
@@ -35,6 +35,7 @@ java -jar proxy-switcher-VERSION.jar enable bash,gradle,git some.proxy.host.valu
 * Bash
 * Gradle
 * Git
+* Npm
 
 ## Supported platform
 

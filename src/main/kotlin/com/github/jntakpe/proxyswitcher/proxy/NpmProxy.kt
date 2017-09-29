@@ -26,8 +26,8 @@ class NpmProxy(platform: Platform, private val proxyAddress: ProxyAddress) : Pro
     }
 
     override fun enable() {
-        fileHandler.put(HTTP_PROXY, "${HTTP.name.toLowerCase()}://${proxyAddress.host}:${proxyAddress.port}")
-        fileHandler.put(HTTPS_PROXY, "${HTTP.name.toLowerCase()}://${proxyAddress.host}:${proxyAddress.port}")
+        fileHandler.put(HTTP_PROXY, "${HTTP.value}://${proxyAddress.host}:${proxyAddress.port}")
+        fileHandler.put(HTTPS_PROXY, "${HTTP.value}://${proxyAddress.host}:${proxyAddress.port}")
     }
 
     override fun disable() {

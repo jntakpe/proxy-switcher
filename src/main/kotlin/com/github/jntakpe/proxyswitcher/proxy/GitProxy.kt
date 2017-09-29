@@ -22,12 +22,12 @@ class GitProxy(platform: Platform, private val proxyAddress: ProxyAddress) : Pro
     }
 
     override fun enable() {
-        fileHandler.put(HTTP.name.toLowerCase(), "${proxyAddress.host}:${proxyAddress.port}")
-        fileHandler.put(HTTPS.name.toLowerCase(), "${proxyAddress.host}:${proxyAddress.port}")
+        fileHandler.put(HTTP.value, "${proxyAddress.host}:${proxyAddress.port}")
+        fileHandler.put(HTTPS.value, "${proxyAddress.host}:${proxyAddress.port}")
     }
 
     override fun disable() {
-        fileHandler.remove(HTTP.name.toLowerCase())
-        fileHandler.remove(HTTPS.name.toLowerCase())
+        fileHandler.remove(HTTP.value)
+        fileHandler.remove(HTTPS.value)
     }
 }
