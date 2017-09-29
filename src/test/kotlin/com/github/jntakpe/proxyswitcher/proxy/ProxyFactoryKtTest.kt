@@ -31,9 +31,21 @@ internal class ProxyFactoryKtTest {
     }
 
     @Test
+    fun `createProxies should create git proxy`() {
+        val proxies = createProxies(listOf("GIT"), OSXPlatform(), ProxyAddress("", ""))
+        assertThat(proxies).hasSize(1).allMatch { it is GitProxy }
+    }
+
+    @Test
+    fun `createProxies should create NPM proxy`() {
+        val proxies = createProxies(listOf("NPM"), OSXPlatform(), ProxyAddress("", ""))
+        assertThat(proxies).hasSize(1).allMatch { it is NpmProxy }
+    }
+
+    @Test
     fun `createProxies should create two proxies`() {
-        val proxies = createProxies(listOf("bash", "gradle"), OSXPlatform(), ProxyAddress("", ""))
-        assertThat(proxies).hasSize(2)
+        val proxies = createProxies(listOf("bash", "gradle", "git", "npm"), OSXPlatform(), ProxyAddress("", ""))
+        assertThat(proxies).hasSize(4)
     }
 
 }
