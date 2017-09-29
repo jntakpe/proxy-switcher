@@ -139,7 +139,6 @@ internal class BashFileHandlerTest {
         val updatedLines = Files.readAllLines(path)
         assertThat(updatedLines).hasSize(lines.size - 1)
         assertThat(updatedLines.filter { it.startsWith(exportKey, true) }).isEmpty()
-
     }
 
     private fun createEmptyBashFile() = Files.createFile(tmpDirPath().resolve(".empty_bash_profile"))

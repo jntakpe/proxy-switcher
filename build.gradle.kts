@@ -5,14 +5,14 @@ val assertJVersion = "3.8.0"
 val commonsIOVersion = "2.5"
 
 group = "com.github.jntakpe"
-version = "0.1.0"
+version = "0.1.1"
 
 buildscript {
     repositories {
         jcenter()
     }
     dependencies {
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.1.50")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.1.51")
         classpath("org.junit.platform:junit-platform-gradle-plugin:1.0.0")
     }
 }

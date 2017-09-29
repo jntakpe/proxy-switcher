@@ -6,7 +6,7 @@ import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.StandardOpenOption.APPEND
 
-class BashFileHandler(private val path: Path, private val create: Boolean = true) : FileHandler {
+class BashFileHandler(private val path: Path, create: Boolean = true) : FileHandler {
 
     init {
         createIfMissing(path, create)

@@ -41,7 +41,7 @@ internal class BashProxyTest {
     }
 
     @Test
-    fun `enable should not add no proxy propert`() {
+    fun `enable should not add no proxy property`() {
         BashProxy(TestPlatform(), ProxyAddress("some.proxy.host.value", "8080")).enable()
         assertThat(configLines().any { it.startsWith("export NO_PROXY") }).isFalse()
     }

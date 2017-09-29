@@ -14,4 +14,5 @@ fun createProxies(keys: List<String>, platform: Platform, proxyAddress: ProxyAdd
 private fun keyToProxy(key: AppKey, platform: Platform, proxyAddress: ProxyAddress) = when (key) {
     AppKey.BASH -> BashProxy(platform, proxyAddress)
     AppKey.GRADLE -> GradleProxy(platform, proxyAddress)
+    AppKey.GIT -> GitProxy(platform, proxyAddress)
 }
