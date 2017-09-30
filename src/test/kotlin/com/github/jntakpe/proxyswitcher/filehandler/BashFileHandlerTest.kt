@@ -43,7 +43,7 @@ internal class BashFileHandlerTest {
         val key = "newline"
         val value = "some value"
         BashFileHandler(path).put(key, value)
-        val lines = Files.lines(path)
+        val lines = Files.readAllLines(path)
         assertThat(lines).contains("export $key=$value").hasSize(1)
     }
 

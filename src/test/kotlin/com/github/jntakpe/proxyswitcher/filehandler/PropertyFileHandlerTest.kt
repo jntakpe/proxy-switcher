@@ -43,7 +43,7 @@ class PropertyFileHandlerTest {
         val key = "newline"
         val value = "some value"
         PropertyFileHandler(path).put(key, value)
-        val lines = Files.lines(path)
+        val lines = Files.readAllLines(path)
         assertThat(lines).contains("$key=$value").hasSize(1)
     }
 

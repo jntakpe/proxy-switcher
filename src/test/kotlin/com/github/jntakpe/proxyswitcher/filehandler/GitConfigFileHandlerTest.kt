@@ -43,7 +43,7 @@ internal class GitConfigFileHandlerTest {
         val key = "protocol"
         val value = "some.proxy.host:9080"
         GitConfigFileHandler(path).put(key, value)
-        val lines = Files.lines(path)
+        val lines = Files.readAllLines(path)
         assertThat(lines).contains("[$key]", "    proxy = $key://$value").hasSize(2)
     }
 

@@ -5,7 +5,7 @@ import java.nio.file.Files
 import java.nio.file.Paths
 
 internal fun cleanUpTmpDir() {
-    FileUtils.deleteQuietly(tmpDirPath().toFile())
+    FileUtils.deleteDirectory(tmpDirPath().toFile())
     Files.createDirectory(tmpDirPath())
 }
 
