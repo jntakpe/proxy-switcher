@@ -39,4 +39,4 @@ java -jar proxy-switcher-VERSION.jar enable bash,gradle,git,npm some.proxy.host.
 
 ## Supported platform
 
-Right now only OSX is supported
+Right now only OSX and Windows platforms are supported

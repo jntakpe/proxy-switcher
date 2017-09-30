@@ -5,7 +5,7 @@ val assertJVersion = "3.8.0"
 val commonsIOVersion = "2.5"
 
 group = "com.github.jntakpe"
-version = "0.2.0"
+version = "0.3.0"
 
 buildscript {
     repositories {

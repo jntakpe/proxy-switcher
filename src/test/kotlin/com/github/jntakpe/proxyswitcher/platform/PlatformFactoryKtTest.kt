@@ -14,4 +14,11 @@ internal class PlatformFactoryKtTest {
         })
     }
 
+    @Test
+    fun `createPlatform should create Windows`() {
+        assumingThat(System.getProperty("os.name").startsWith("windows", true), {
+            assertThat(createPlatform()).isInstanceOf(WindowsPlatform::class.java)
+        })
+    }
+
 }
