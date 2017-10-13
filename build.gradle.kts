@@ -12,13 +12,13 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.1.51")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:")
         classpath("org.junit.platform:junit-platform-gradle-plugin:1.0.0")
     }
 }
 
 plugins {
-    kotlin("jvm")
+    kotlin("jvm") version "1.1.51"
 }
 
 apply {
@@ -26,7 +26,7 @@ apply {
 }
 
 dependencies {
-    compile(kotlin("stdlib"))
+    compile(kotlin("stdlib", "1.1.51"))
     testCompile("commons-io:commons-io:$commonsIOVersion")
     testCompile("org.assertj:assertj-core:$assertJVersion")
     testCompile("org.junit.jupiter:junit-jupiter-api:$junitVersion")
