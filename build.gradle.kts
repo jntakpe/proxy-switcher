@@ -26,7 +26,7 @@ apply {
 }
 
 dependencies {
-    compile(kotlin("stdlib", "1.1.51"))
+    compile(kotlin("stdlib-jre8", "1.1.51"))
     testCompile("commons-io:commons-io:$commonsIOVersion")
     testCompile("org.assertj:assertj-core:$assertJVersion")
     testCompile("org.junit.jupiter:junit-jupiter-api:$junitVersion")
